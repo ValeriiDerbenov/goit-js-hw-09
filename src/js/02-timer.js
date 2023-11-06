@@ -9,6 +9,7 @@ const refs = {
   minutes: document.querySelector('.value[data-minutes]'),
   seconds: document.querySelector('.value[data-seconds]'),
 };
+onBtnStartDisable();
 
 const options = {
   enableTime: true,
@@ -17,11 +18,19 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     const datePicked = selectedDates[0];
-    const dateNow = new Date();
+    const currentDate = new Date();
     console.log(selectedDates[0]);
+
+    if (currentDate > datePicked) {
+      onBtnStartDisable();
+      Notify.warning('Please, choose a date in the future!');
+    } else {
+      onBtnStartRemoveDisable();
+    }
   },
 };
-const datePicker = flatpickr('#datetime-picker', options);
+
+const datePicked = flatpickr('#datetime-picker', options);
 
 refs.btnStart.addEventListener('click', onBtnClickHendler);
 function onBtnClickHendler() {
@@ -30,6 +39,9 @@ function onBtnClickHendler() {
 
 function onBtnStartDisable() {
   refs.btnStart.disabled = true;
+}
+function onBtnStartRemoveDisable() {
+  refs.btnStart.disabled = false;
 }
 
 function convertMs(ms) {
