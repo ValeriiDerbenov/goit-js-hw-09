@@ -30,11 +30,23 @@ const options = {
   },
 };
 
-const datePicked = flatpickr('#datetime-picker', options);
+const datePicker = flatpickr('#datetime-picker', options);
 
 refs.btnStart.addEventListener('click', onBtnClickHendler);
 function onBtnClickHendler() {
   onBtnStartDisable();
+  Notify.success('Timer started! Enjoy it;)');
+  const timerId = setInterval(() => {
+    const datePicked = datePicker.selectedDates[0];
+    const currentDate = new Date();
+    const timeLeft = datePicked - currentDate;
+    const timeLeftNow = convertMs(timeLeft);
+
+    refs.days.textContent = addLeadingZero(timeLeftNow.days);
+    refs.hours.textContent = addLeadingZero(timeLeftNow.hours);
+    refs.minutes.textContent = addLeadingZero(timeLeftNow.minutes);
+    refs.seconds.textContent = addLeadingZero(timeLeftNow.seconds);
+  }, 1000);
 }
 
 function onBtnStartDisable() {
@@ -42,6 +54,10 @@ function onBtnStartDisable() {
 }
 function onBtnStartRemoveDisable() {
   refs.btnStart.disabled = false;
+}
+
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0');
 }
 
 function convertMs(ms) {
