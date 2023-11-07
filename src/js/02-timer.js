@@ -17,11 +17,11 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    const datePicked = selectedDates[0];
+    const selectedDate = selectedDates[0];
     const currentDate = new Date();
     console.log(selectedDates[0]);
 
-    if (currentDate > datePicked) {
+    if (currentDate > selectedDate) {
       onBtnStartDisable();
       Notify.warning('Please, choose a date in the future!');
     } else {
@@ -35,17 +35,22 @@ const datePicker = flatpickr('#datetime-picker', options);
 refs.btnStart.addEventListener('click', onBtnClickHendler);
 function onBtnClickHendler() {
   onBtnStartDisable();
-  Notify.success('Timer started! Enjoy it;)');
+  Notify.success('Timer started!)');
   const timerId = setInterval(() => {
     const datePicked = datePicker.selectedDates[0];
     const currentDate = new Date();
     const timeLeft = datePicked - currentDate;
-    const timeLeftNow = convertMs(timeLeft);
+    const timeLeftConverted = convertMs(timeLeft);
 
-    refs.days.textContent = addLeadingZero(timeLeftNow.days);
-    refs.hours.textContent = addLeadingZero(timeLeftNow.hours);
-    refs.minutes.textContent = addLeadingZero(timeLeftNow.minutes);
-    refs.seconds.textContent = addLeadingZero(timeLeftNow.seconds);
+    refs.days.textContent = addFirstZero(timeLeftConverted.days);
+    refs.hours.textContent = addFirstZero(timeLeftConverted.hours);
+    refs.minutes.textContent = addFirstZero(timeLeftConverted.minutes);
+    refs.seconds.textContent = addFirstZero(timeLeftConverted.seconds);
+
+    if (timeLeft < 1000) {
+      clearInterval(timerId);
+      Notify.success("It's time!");
+    }
   }, 1000);
 }
 
@@ -56,7 +61,7 @@ function onBtnStartRemoveDisable() {
   refs.btnStart.disabled = false;
 }
 
-function addLeadingZero(value) {
+function addFirstZero(value) {
   return String(value).padStart(2, '0');
 }
 
