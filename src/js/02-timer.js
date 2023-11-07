@@ -1,6 +1,7 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Report } from 'notiflix/build/notiflix-report-aio';
+// import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const refs = {
   btnStart: document.querySelector('button[data-start]'),
@@ -23,7 +24,7 @@ const options = {
 
     if (currentDate > selectedDate) {
       onBtnStartDisable();
-      Notify.warning('Please, choose a date in the future!');
+      Report.warning('Please, choose a date in the future!');
     } else {
       onBtnStartRemoveDisable();
     }
@@ -35,7 +36,7 @@ const datePicker = flatpickr('#datetime-picker', options);
 refs.btnStart.addEventListener('click', onBtnClickHendler);
 function onBtnClickHendler() {
   onBtnStartDisable();
-  Notify.success('Timer started!)');
+  Report.success('Timer started!)');
   const timerId = setInterval(() => {
     const datePicked = datePicker.selectedDates[0];
     const currentDate = new Date();
@@ -49,7 +50,7 @@ function onBtnClickHendler() {
 
     if (timeLeft < 1000) {
       clearInterval(timerId);
-      Notify.success("It's time!");
+      Report.success("It's time!");
     }
   }, 1000);
 }
