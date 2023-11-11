@@ -12,4 +12,5 @@ label {
 
 button[type='submit'] {
   margin-top: 15px;
+  cursor: pointer;
 }
