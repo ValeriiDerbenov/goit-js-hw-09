@@ -14,8 +14,9 @@ function onBtnClickHendler(event) {
     return Notify.warning(`'Alert', 'Field values must be > 0', 'Try again'`);
   }
 
-  for (let i = 0; i < amount; i += 1) {
-    createPromise(i, delay + step * i)
+  for (let i = 1; i < amount + 1; i += 1) {
+    const dalayInFunc = delay + (i - 1) * step;
+    createPromise(i, dalayInFunc)
       .then(({ position, delay }) => {
         Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
       })
@@ -23,6 +24,7 @@ function onBtnClickHendler(event) {
         Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
       });
   }
+  event.currentTarget.reset();
 }
 
 function createPromise(position, delay) {
